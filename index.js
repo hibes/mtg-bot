@@ -67,9 +67,13 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
           let fname = req.body.text + ".jpg";
           fs.writeFile('./static/' + fname, data, (err) => {
             if (!err) {
-              res.status(200).json({
+              let message = {
                 "image_url": req.protocol + "://" + req.hostname + "/static/" + fname
-              });
+              };
+
+              res.status(200).json(message);
+
+              console.log(message);
 
               return;
             }
