@@ -2,18 +2,19 @@
 
 let https = require('https');
 
-https.get('https://api.magicthegathering.io/v1/cards?name=Sol%20Ring', (res) => {
-  let rawData = '';
+function getCard(cardName) {
+  https.get('https://api.magicthegathering.io/v1/cards?name=' + encodeURIComponent(cardName), (res) => {
+    let rawData = '';
 
-  res.on('data', (d) => {
-    rawData += d;
+    res.on('data', (d) => {
+      rawData += d;
+    });
+
+    res.on('end', () => {
+      let cards = JSON.parse(rawData);
+      console.log(cards.cards[0].imageUrl);
+    });
   });
+}
 
-  res.on('end', () => {
-    console.log(rawData);
-    let cards = JSON.parse(rawData);
-    console.log("Cards!");
-    console.log(cards.cards[0].imageUrl);
-  });
-});
-
+getCard("Sol Ring");
