@@ -32,10 +32,14 @@ function getCardImage(imageUrl, callback) {
     let rawData = '';
     res.on('data', (d) => {
       rawData += d;
+
+      console.log("Received Data for cardImage");
     });
 
     res.on('end', () => {
       callback(rawData);
+
+      console.log("Received all cardImage data.");
     });
   });
 }
@@ -62,6 +66,8 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
           console.log(res);
         });
         */
+
+        console.log("Getting card image");
 
         getCardImage(imageUrl, (data) => {
           res.status(200).send(data);
