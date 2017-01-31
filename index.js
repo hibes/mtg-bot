@@ -62,7 +62,11 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
 
       getCard(req.body.text, function(imageUrl) {
         let message = {
-          "image_url": imageUrl
+          "attachments": [
+            {
+              "image_url": imageUrl
+            }
+          ]
         };
 
         res.status(200).json(message);
