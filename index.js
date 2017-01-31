@@ -23,7 +23,7 @@ function getCard(cardName, callback) {
 }
 
 app.get('/', function(req, res) {
-  getCard(req.params['card']), function(imageUrl) {
+  getCard(req.params['card'], function(imageUrl) {
     res.status(200).send(imageUrl);
   });
 });
