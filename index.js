@@ -70,36 +70,6 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
         };
 
         res.status(200).json(message);
-
-        /*
-        console.log("Getting card image");
-
-        let fname = req.body.text + ".jpg";
-        let file_to_write = './static/' + fname;
-
-        getCardImage(imageUrl, file_to_write, (err) => {
-          console.log("Wrote " + file_to_write);
-
-          if (!err) {
-            let message = {
-              "image_url": req.protocol + "://" + req.hostname + "/static/" + encodeURIComponent(fname)
-            };
-
-            res.status(200).json(message);
-
-            console.log("Sent: " + message);
-
-            return;
-          }
-
-          console.log(err);
-
-          console.log("Request failed: ");
-          console.log(req);
-
-          res.sendStatus(400);
-        });
-        */
       });
     }
   }
