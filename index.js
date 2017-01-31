@@ -61,6 +61,13 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
       };
 
       getCard(req.body.text, function(imageUrl) {
+        let message = {
+          "image_url": imageUrl
+        };
+
+        res.status(200).json(message);
+
+        /*
         console.log("Getting card image");
 
         let fname = req.body.text + ".jpg";
@@ -88,6 +95,7 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
 
           res.sendStatus(400);
         });
+        */
       });
     }
   }
