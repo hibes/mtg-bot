@@ -28,7 +28,7 @@ function getCard(cardName, callback) {
   });
 }
 
-function getCardImage(imageUrl, callback) {
+function getCardImage(imageUrl, fname, callback) {
   http.get(imageUrl, (res) => {
     let rawData = '';
     res.on('data', (d) => {
@@ -38,7 +38,7 @@ function getCardImage(imageUrl, callback) {
     });
 
     res.on('end', () => {
-      callback(rawData);
+      fs.writeFile(fname, rawData, 'binary', callback);
 
       console.log("Received all cardImage data.");
     });
@@ -63,26 +63,29 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
       getCard(req.body.text, function(imageUrl) {
         console.log("Getting card image");
 
-        getCardImage(imageUrl, (data) => {
-          let fname = req.body.text + ".jpg";
-          fs.writeFile('./static/' + fname, data, (err) => {
-            if (!err) {
-              let message = {
-                "image_url": req.protocol + "://" + req.hostname + "/static/" + fname
-              };
+        let fname = req.body.text + ".jpg";
 
-              res.status(200).json(message);
+        getCardImage(imageUrl, fname, (err) => {
+          console.log("Wrote " + fname);
 
-              console.log("Sent: " + message);
+          if (!err) {
+            let message = {
+              "image_url": req.protocol + "://" + req.hostname + "/static/" + fname
+            };
 
-              return;
-            }
+            res.status(200).json(message);
 
-            console.log("Request failed: ");
-            console.log(req);
+            console.log("Sent: " + message);
 
-            res.sendStatus(400);
-          });
+            return;
+          }
+
+          console.log(err);
+
+          console.log("Request failed: ");
+          console.log(req);
+
+          res.sendStatus(400);
         });
       });
     }
