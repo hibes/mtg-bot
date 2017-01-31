@@ -1,6 +1,6 @@
 "use strict";
 
-let bparser = require('body-parser');
+let bodyParser = require('body-parser');
 let https = require('https');
 let express = require('express');
 let url = require('url');
