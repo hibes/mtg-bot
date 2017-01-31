@@ -1,6 +1,7 @@
 "use strict";
 
 let bodyParser = require('body-parser');
+let http = require('http');
 let https = require('https');
 let express = require('express');
 let url = require('url');
@@ -26,6 +27,19 @@ function getCard(cardName, callback) {
   });
 }
 
+function getCardImage(imageUrl, callback) {
+  http.get(imageUrl, (res) => {
+    let rawData = '';
+    res.on('data', (d) => {
+      rawData += d;
+    });
+
+    res.on('end', () => {
+      callback(rawData);
+    });
+  });
+}
+
 let urlEncodedBodyParser = bodyParser.urlencoded({extended:false});
 
 app.post('/', urlEncodedBodyParser, function(req, res) {
@@ -42,11 +56,16 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
       };
 
       getCard(req.body.text, function(imageUrl) {
+        /*
+         * This doesn't seem to be necessary code.
         var req = https.request(options, (res) => {
           console.log(res);
         });
+        */
 
-        res.status(200).send(imageUrl);
+        getCardImage(imageUrl, (data) => {
+          res.status(200).send(data);
+        });
       });
 
       return;
