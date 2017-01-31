@@ -45,6 +45,9 @@ app.post('/', function(req, res) {
       res.status(200).send(imageUrl);
     });
   } else {
+    console.log("Request failed: ");
+    console.log(req);
+
     res.sendStatus(400);
   }
 });
