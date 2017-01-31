@@ -1,6 +1,7 @@
 "use strict";
 
 let bodyParser = require('body-parser');
+let fs = require('fs');
 let http = require('http');
 let https = require('https');
 let express = require('express');
@@ -69,12 +70,25 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
 
         console.log("Getting card image");
 
+
         getCardImage(imageUrl, (data) => {
-          res.status(200).send(data);
+          fname = req.body.text + ".jpg";
+          fs.writeFile('./static/' + fname, data, (err) => {
+            if (!err) {
+              res.status(200).json({
+                "image_url": req.protocol + "://" + req.hostname + "/static/" + fname
+              });
+
+              return;
+            }
+
+            console.log("Request failed: ");
+            console.log(req);
+
+            res.sendStatus(400);
+          });
         });
       });
-
-      return;
     }
   }
 
