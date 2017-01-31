@@ -3,7 +3,7 @@
 let https = require('https');
 let express = require('express');
 let app = express();
-let PORT_NUMBER = 80;
+let PORT_NUMBER = process.env.PORT || 3000;
 
 function getCard(cardName) {
   https.get('https://api.magicthegathering.io/v1/cards?name=' + encodeURIComponent(cardName), (res) => {
