@@ -3,6 +3,7 @@
 let https = require('https');
 let express = require('express');
 let app = express();
+let PORT_NUMBER = 80;
 
 function getCard(cardName) {
   https.get('https://api.magicthegathering.io/v1/cards?name=' + encodeURIComponent(cardName), (res) => {
@@ -21,4 +22,8 @@ function getCard(cardName) {
 
 app.get('/', function(req, res) {
   res.status(200).send(getCard(req.params[cardName]));
+});
+
+app.listen(PORT_NUMBER, function() {
+  console.log("Listening on port " + PORT_NUMBER);
 });
