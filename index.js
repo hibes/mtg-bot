@@ -32,8 +32,6 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
   // Assumes content-type application/x-www-form-urlencoded
   if (req.body) {
     if (req.body.response_url) {
-      res.sendStatus(200);
-
       let lUrl = url.parse(req.body.response_url);
 
       let options = {
