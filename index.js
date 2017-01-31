@@ -2,7 +2,10 @@
 
 let https = require('https');
 let express = require('express');
+let url = require('url');
+
 let app = express();
+
 let PORT_NUMBER = process.env.PORT || 3000;
 
 function getCard(cardName, callback) {
@@ -22,9 +25,23 @@ function getCard(cardName, callback) {
   });
 }
 
-app.get('/', function(req, res) {
-  if (req.query['card'] !== undefined) {
-    getCard(req.query['card'], function(imageUrl) {
+app.post('/', function(req, res) {
+  if (req.params['text'] !== undefined) {
+    res.sendStatus(200);
+    let lUrl = url.parse(req.params['response_url']);
+
+    let options = {
+      hostname: lUrl.hostname,
+      port: lUrl.port,
+      path: lUrl.path,
+      method: "POST"
+    };
+
+    getCard(req.params['text'], function(imageUrl) {
+      var req = https.request(options, (res) => {
+        console.log(res);
+      });
+
       res.status(200).send(imageUrl);
     });
   } else {
