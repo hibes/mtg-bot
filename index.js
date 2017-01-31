@@ -73,7 +73,7 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
 
               res.status(200).json(message);
 
-              console.log(message);
+              console.log("Sent: " + message);
 
               return;
             }
@@ -88,6 +88,8 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
     }
   }
 });
+
+app.use('/static', express.static('static'));
 
 app.listen(PORT_NUMBER, function() {
   console.log("Listening on port " + PORT_NUMBER);
