@@ -23,9 +23,13 @@ function getCard(cardName, callback) {
 }
 
 app.get('/', function(req, res) {
-  getCard(req.params['card'], function(imageUrl) {
-    res.status(200).send(imageUrl);
-  });
+  if (req.query['card'] !== undefined) {
+    getCard(req.query['card'], function(imageUrl) {
+      res.status(200).send(imageUrl);
+    });
+  } else {
+    res.sendStatus(400);
+  }
 });
 
 app.listen(PORT_NUMBER, function() {
