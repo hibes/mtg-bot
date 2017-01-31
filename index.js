@@ -41,7 +41,7 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
         method: "POST"
       };
 
-      getCard(req.params['text'], function(imageUrl) {
+      getCard(req.body.text, function(imageUrl) {
         var req = https.request(options, (res) => {
           console.log(res);
         });
