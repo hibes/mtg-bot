@@ -61,15 +61,7 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
       };
 
       getCard(req.body.text, function(imageUrl) {
-        /*
-         * This doesn't seem to be necessary code.
-        var req = https.request(options, (res) => {
-          console.log(res);
-        });
-        */
-
         console.log("Getting card image");
-
 
         getCardImage(imageUrl, (data) => {
           let fname = req.body.text + ".jpg";
@@ -91,11 +83,6 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
       });
     }
   }
-
-  console.log("Request failed: ");
-  console.log(req);
-
-  res.sendStatus(400);
 });
 
 app.listen(PORT_NUMBER, function() {
