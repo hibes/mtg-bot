@@ -72,7 +72,7 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
 
 
         getCardImage(imageUrl, (data) => {
-          fname = req.body.text + ".jpg";
+          let fname = req.body.text + ".jpg";
           fs.writeFile('./static/' + fname, data, (err) => {
             if (!err) {
               res.status(200).json({
