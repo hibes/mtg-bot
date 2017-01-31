@@ -1,5 +1,6 @@
 "use strict";
 
+let bparser = require('body-parser');
 let https = require('https');
 let express = require('express');
 let url = require('url');
@@ -25,31 +26,39 @@ function getCard(cardName, callback) {
   });
 }
 
-app.post('/', function(req, res) {
-  if (req.params['text'] !== undefined) {
-    res.sendStatus(200);
-    let lUrl = url.parse(req.params['response_url']);
+let urlEncodedBodyParser = bodyParser.urlencoded({extended:false});
 
-    let options = {
-      hostname: lUrl.hostname,
-      port: lUrl.port,
-      path: lUrl.path,
-      method: "POST"
-    };
+app.post('/', urlEncodedBodyParser, function(req, res) {
+  // Assumes content-type application/x-www-form-urlencoded
+  if (req.body) {
+    if (req.body.response_url) {
+      res.sendStatus(200);
 
-    getCard(req.params['text'], function(imageUrl) {
-      var req = https.request(options, (res) => {
-        console.log(res);
+      let lUrl = url.parse(req.body.response_url);
+
+      let options = {
+        hostname: lUrl.hostname,
+        port: lUrl.port,
+        path: lUrl.path,
+        method: "POST"
+      };
+
+      getCard(req.params['text'], function(imageUrl) {
+        var req = https.request(options, (res) => {
+          console.log(res);
+        });
+
+        res.status(200).send(imageUrl);
       });
 
-      res.status(200).send(imageUrl);
-    });
-  } else {
-    console.log("Request failed: ");
-    console.log(req);
-
-    res.sendStatus(400);
+      return;
+    }
   }
+
+  console.log("Request failed: ");
+  console.log(req);
+
+  res.sendStatus(400);
 });
 
 app.listen(PORT_NUMBER, function() {
