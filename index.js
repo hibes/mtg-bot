@@ -62,6 +62,7 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
 
       getCard(req.body.text, function(imageUrl) {
         let message = {
+          "response_type": "in_channel",
           "attachments": [
             {
               "image_url": imageUrl
