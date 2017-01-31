@@ -28,7 +28,7 @@ function getCard(cardName, callback) {
   });
 }
 
-function getCardImage(imageUrl, fname, callback) {
+function getCardImage(imageUrl, file_to_write, callback) {
   http.get(imageUrl, (res) => {
     let rawData = '';
     res.on('data', (d) => {
@@ -38,7 +38,7 @@ function getCardImage(imageUrl, fname, callback) {
     });
 
     res.on('end', () => {
-      fs.writeFile(fname, rawData, 'binary', callback);
+      fs.writeFile(file_to_write, rawData, 'binary', callback);
 
       console.log("Received all cardImage data.");
     });
@@ -64,13 +64,14 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
         console.log("Getting card image");
 
         let fname = req.body.text + ".jpg";
+        let file_to_write = './static/' + fname;
 
-        getCardImage(imageUrl, fname, (err) => {
-          console.log("Wrote " + fname);
+        getCardImage(imageUrl, file_to_write, (err) => {
+          console.log("Wrote " + file_to_write);
 
           if (!err) {
             let message = {
-              "image_url": req.protocol + "://" + req.hostname + "/static/" + fname
+              "image_url": req.protocol + "://" + req.hostname + "/static/" + encodeURIComponent(fname)
             };
 
             res.status(200).json(message);
