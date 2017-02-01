@@ -20,8 +20,8 @@ function getCard(cardName, callback) {
 
   for (let i = 0; i < cardName.length; ++i) {
     if (cardName[i] === "'") {
-      if (i === 0 || cardName[i-1] !== '\\') {
-        e_gibberish += "\\\\";
+      if (i === 0 || cardName[i-1] !== "\\") {
+        e_gibberish += "\\";
       }
     }
 
