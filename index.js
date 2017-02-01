@@ -12,8 +12,8 @@ let app = express();
 let PORT_NUMBER = process.env.PORT || 3000;
 
 function getCard(cardName, callback) {
-  let searchUrl = 'https://api.magicthegathering.io/v1/cards?name="' + encodeURIComponent(cardName) + '"';
-  console.log("Trying " + searchUrl);
+  let searchUrl = 'https://api.magicthegathering.io/v1/cards?name=' + encodeURIComponent(cardName);
+  console.log('Trying ' + searchUrl);
 
   https.get(searchUrl, (res) => {
     let rawData = '';
@@ -69,10 +69,10 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
   // Assumes content-type application/x-www-form-urlencoded
   if (req.body) {
     getCard(req.body.text, function(imageUrl) {
-      console.log("getCard finished, gave: " + imageUrl);
+      console.log('getCard finished, gave: ' + imageUrl);
 
       if (!imageUrl) {
-        res.status(503).send("An imageUrl for " + req.body.text + " was not found...");
+        res.status(503).send('An imageUrl for ' + req.body.text + ' was not found...');
 
         return;
       }
@@ -93,7 +93,7 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
       return;
     });
   } else {
-    console.log("No req.body detected.");
+    console.log('No req.body detected.');
 
     res.status(400).send();
 
