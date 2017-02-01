@@ -83,10 +83,10 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
 
       let message = {
         'response_type': 'in_channel',
-        'title': req.body.text,
-        'title_link': imageUrl.replace('Handlers/Image', '/Pages/Card/Details'),
         'attachments': [
           {
+            'title': req.body.text,
+            'title_link': imageUrl.replace('Handlers/Image', '/Pages/Card/Details'),
             'image_url': imageUrl
           }
         ]
