@@ -12,7 +12,7 @@ let app = express();
 let PORT_NUMBER = process.env.PORT || 3000;
 
 function getCard(cardName, callback) {
-  let searchUrl = 'https://api.magicthegathering.io/v1/cards?name=' + cardName;
+  let searchUrl = 'https://api.magicthegathering.io/v1/cards?name=' + encodeURIComponent(cardName).replace("'", "%27");
   console.log('Trying {' + searchUrl + '}');
   console.log(cardName.toString('hex'));
 
