@@ -43,6 +43,7 @@ function getCard(cardName, callback) {
       callback(cards.cards.map((card) => {
         return card.imageUrl;
       }).reduce((a, b) => {
+        console.log(a + " ? " + a + " : " + b);
         return (a ? a : b);
       }));
     });
