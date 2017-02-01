@@ -16,16 +16,29 @@ function getCard(cardName, callback) {
   let e = encodeURIComponent(cardName);
   let e_replace = e.replace(/'/g, '%27');
 
+  let e_gibberish = '';
+
+  for (let i = 0; i < e.length; ++i) {
+    if (e[i] === "'") {
+      if (i === 0 || e[i-1] !== '\\') {
+        e_gibberish += '\\';
+      }
+    }
+
+    e_gibberish += e[i];
+  }
+
   console.log(cardName);
   console.log(e);
   console.log(e_replace);
+  console.log(e_gibberish);
 
   let options = {
     'headers': {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
     'host': 'api.magicthegathering.io',
-    'path': '/v1/cards?name=' + e_replace,
+    'path': '/v1/cards?name=' + e_gibberish,
     'port': 443,
     'protocol': 'https:'
   };
