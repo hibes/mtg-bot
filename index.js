@@ -54,31 +54,24 @@ let urlEncodedBodyParser = bodyParser.urlencoded({extended:false});
 app.post('/', urlEncodedBodyParser, function(req, res) {
   // Assumes content-type application/x-www-form-urlencoded
   if (req.body) {
-    if (req.body.response_url) {
-      let lUrl = url.parse(req.body.response_url);
-
-      let options = {
-        hostname: lUrl.hostname,
-        port: lUrl.port,
-        path: lUrl.path,
-        method: 'POST'
+    getCard(req.body.text, function(imageUrl) {
+      let message = {
+        'response_type': 'in_channel',
+        'title': req.body.text,
+        'title_link': imageUrl.replace('Handlers/Image', '/Pages/Card/Details'),
+        'attachments': [
+          {
+            'image_url': imageUrl
+          }
+        ]
       };
 
-      getCard(req.body.text, function(imageUrl) {
-        let message = {
-          'response_type': 'in_channel',
-          'title': req.body.text,
-          'title_link': imageUrl.replace('Handlers/Image', '/Pages/Card/Details'),
-          'attachments': [
-            {
-              'image_url': imageUrl
-            }
-          ]
-        };
+      res.status(200).json(message);
+    });
+  } else {
+    console.log("No req.body detected.");
 
-        res.status(200).json(message);
-      });
-    }
+    res.status(400).send();
   }
 });
 
