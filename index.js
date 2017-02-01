@@ -13,12 +13,19 @@ let app = express();
 let PORT_NUMBER = process.env.PORT || 3000;
 
 function getCard(cardName, callback) {
+  let e = encodeURIComponent(cardName);
+  let e_replace = e.replace(/'/g, '%27');
+
+  console.log(cardName);
+  console.log(e);
+  console.log(e_replace);
+
   let options = {
     'headers': {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
     'host': 'api.magicthegathering.io',
-    'path': '/v1/cards?name=' + encodeURIComponent(cardName).replace(/'/g, '%27'),
+    'path': '/v1/cards?name=' + e_replace,
     'port': 443,
     'protocol': 'https:'
   };
@@ -87,6 +94,7 @@ let urlEncodedBodyParser = bodyParser.urlencoded({extended:false});
 app.post('/', urlEncodedBodyParser, function(req, res) {
   // Assumes content-type application/x-www-form-urlencoded
   if (req.body) {
+    console.log(req.body);
     getCard(req.body.text, function(imageUrl) {
       console.log('getCard finished, gave: ' + imageUrl);
 
