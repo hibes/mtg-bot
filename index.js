@@ -18,7 +18,7 @@ function getCard(cardName, callback) {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
     'host': 'api.magicthegathering.io',
-    'path': '/v1/cards?name=' + encodeURIComponent(cardName).replace("'", '%27'),
+    'path': encodeURI('/v1/cards?name=' + cardName),
     'port': 443,
     'protocol': 'https:'
   };
