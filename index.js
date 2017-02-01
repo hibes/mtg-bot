@@ -86,7 +86,7 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
         'attachments': [
           {
             'title': req.body.text,
-            'title_link': imageUrl.replace('Handlers/Image', '/Pages/Card/Details'),
+            'title_link': imageUrl.replace('Handlers/Image.ashx', '/Pages/Card/Details.aspx'),
             'image_url': imageUrl
           }
         ]
