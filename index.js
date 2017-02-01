@@ -21,6 +21,10 @@ function getCard(cardName, callback) {
 
     res.on('end', () => {
       let cards = JSON.parse(rawData);
+      if (cards.cards === undefined || cards.cards.length <= 0) {
+        return;
+      }
+
       console.log(cards.cards[0].imageUrl);
 
       callback(cards.cards[0].imageUrl);
