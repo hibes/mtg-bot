@@ -18,14 +18,14 @@ function getCard(cardName, callback) {
 
   let e_gibberish = '';
 
-  for (let i = 0; i < e.length; ++i) {
-    if (e[i] === "'") {
-      if (i === 0 || e[i-1] !== '\\') {
+  for (let i = 0; i < cardName.length; ++i) {
+    if (cardName[i] === "'") {
+      if (i === 0 || cardName[i-1] !== '\\') {
         e_gibberish += '\\';
       }
     }
 
-    e_gibberish += e[i];
+    e_gibberish += cardName[i];
   }
 
   console.log(cardName);
