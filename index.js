@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 let bodyParser = require('body-parser');
 let fs = require('fs');
@@ -34,13 +34,13 @@ function getCardImage(imageUrl, file_to_write, callback) {
     res.on('data', (d) => {
       rawData += d;
 
-      console.log("Received Data for cardImage");
+      console.log('Received Data for cardImage');
     });
 
     res.on('end', () => {
       fs.writeFile(file_to_write, rawData, 'binary', callback);
 
-      console.log("Received all cardImage data.");
+      console.log('Received all cardImage data.');
     });
   });
 }
@@ -57,15 +57,17 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
         hostname: lUrl.hostname,
         port: lUrl.port,
         path: lUrl.path,
-        method: "POST"
+        method: 'POST'
       };
 
       getCard(req.body.text, function(imageUrl) {
         let message = {
-          "response_type": "in_channel",
-          "attachments": [
+          'response_type': 'in_channel',
+          'title': req.body.text,
+          'title_link': imageUrl.replace('Handlers/Image', '/Pages/Card/Details'),
+          'attachments': [
             {
-              "image_url": imageUrl
+              'image_url': imageUrl
             }
           ]
         };
@@ -79,5 +81,5 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
 app.use('/static', express.static('static'));
 
 app.listen(PORT_NUMBER, function() {
-  console.log("Listening on port " + PORT_NUMBER);
+  console.log('Listening on port ' + PORT_NUMBER);
 });
