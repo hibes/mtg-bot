@@ -13,7 +13,8 @@ let PORT_NUMBER = process.env.PORT || 3000;
 
 function getCard(cardName, callback) {
   let searchUrl = 'https://api.magicthegathering.io/v1/cards?name=' + cardName;
-  console.log('Trying ' + searchUrl);
+  console.log('Trying {' + searchUrl + '}');
+  console.log(cardName.toString('hex'));
 
   https.get(searchUrl, (res) => {
     let rawData = '';
