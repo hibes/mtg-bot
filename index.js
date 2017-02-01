@@ -126,7 +126,7 @@ app.listen(PORT_NUMBER, function() {
   console.log('Listening on port ' + PORT_NUMBER);
 
   setInterval(function() {
-    http.get('http://localhost' + PORT_NUMBER + '/', (res) => {
+    http.get('http://localhost:' + PORT_NUMBER + '/', (res) => {
       console.log("Anti-Idled, received response: " + res);
     });
   }, 25 * 60);
