@@ -5,6 +5,7 @@ let fs = require('fs');
 let http = require('http');
 let https = require('https');
 let express = require('express');
+let querystring = require('querystring');
 let url = require('url');
 
 let app = express();
@@ -12,11 +13,19 @@ let app = express();
 let PORT_NUMBER = process.env.PORT || 3000;
 
 function getCard(cardName, callback) {
-  let searchUrl = 'https://api.magicthegathering.io/v1/cards?name=' + encodeURIComponent(cardName).replace("'", "%27");
-  console.log('Trying {' + searchUrl + '}');
-  console.log(cardName.toString('hex'));
+  let options = {
+    'headers': {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    'host': 'api.magicthegathering.io',
+    'path': '/v1/cards?name=' + encodeURIComponent(cardName).replace("'", '%27'),
+    'port': 443,
+    'protocol': 'https:'
+  };
 
-  https.get(searchUrl, (res) => {
+  console.log('Trying ' + JSON.stringify(options));
+
+  let req = https.request(options, (res) => {
     let rawData = '';
 
     res.on('data', (d) => {
@@ -25,8 +34,6 @@ function getCard(cardName, callback) {
 
     res.on('end', () => {
       let cards = JSON.parse(rawData);
-
-      console.log(cards);
 
       if (cards.cards === undefined || cards.cards.length <= 0) {
         console.log(rawData);
@@ -43,11 +50,19 @@ function getCard(cardName, callback) {
       callback(cards.cards.map((card) => {
         return card.imageUrl;
       }).reduce((a, b) => {
-        console.log(a + " ? " + a + " : " + b);
+        console.log(a + ' ? ' + a + ' : ' + b);
         return (a ? a : b);
       }));
     });
   });
+
+  req.on('error', (e) => {
+    console.log(e);
+
+    callback(undefined);
+  });
+
+  req.end();
 }
 
 function getCardImage(imageUrl, file_to_write, callback) {
@@ -86,7 +101,7 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
         'attachments': [
           {
             'title': req.body.text,
-            'title_link': imageUrl.replace('Handlers/Image.ashx', '/Pages/Card/Details.aspx'),
+            'title_link': imageUrl.replace('/Handlers/Image.ashx', '/Pages/Card/Details.aspx'),
             'image_url': imageUrl
           }
         ]
