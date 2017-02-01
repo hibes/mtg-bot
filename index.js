@@ -21,24 +21,25 @@ function getCard(cardName, callback) {
   for (let i = 0; i < cardName.length; ++i) {
     if (cardName[i] === "'") {
       if (i === 0 || cardName[i-1] !== '\\') {
-        e_gibberish += '\\';
+        e_gibberish += "\\\\";
       }
     }
 
     e_gibberish += cardName[i];
   }
 
-  console.log(cardName);
-  console.log(e);
-  console.log(e_replace);
-  console.log(e_gibberish);
+  console.log('cardName: ' + cardName);
+  console.log('e: ' + e);
+  console.log('e_replace: ' + e_replace);
+  console.log('e_gibberish: ' + e_gibberish);
+  console.log('encodeURIComponent(e_gibberish): ' + encodeURIComponent(e_gibberish));
 
   let options = {
     'headers': {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
     'host': 'api.magicthegathering.io',
-    'path': '/v1/cards?name=' + e_gibberish,
+    'path': '/v1/cards?name=' + encodeURIComponent(e_gibberish),
     'port': 443,
     'protocol': 'https:'
   };
