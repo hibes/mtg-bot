@@ -127,10 +127,4 @@ app.use('/static', express.static('static'));
 
 app.listen(PORT_NUMBER, function() {
   console.log('Listening on port ' + PORT_NUMBER);
-
-  setInterval(function() {
-    http.get('http://localhost:' + PORT_NUMBER + '/', (res) => {
-      console.log('Anti-Idled');
-    });
-  }, 25 * 60 * 1000);
 });
