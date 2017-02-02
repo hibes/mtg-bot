@@ -123,6 +123,14 @@ app.post('/', urlEncodedBodyParser, function(req, res) {
   }
 });
 
+app.head('/', function(req, res) {
+  res.sendStatus(200);
+});
+
+app.get('/', function(req, res) {
+  res.sendStatus(200);
+});
+
 app.use('/static', express.static('static'));
 
 app.listen(PORT_NUMBER, function() {
